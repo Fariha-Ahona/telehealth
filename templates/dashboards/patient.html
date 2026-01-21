@@ -1,55 +1,84 @@
 {% extends "base.html" %}
 
-{% block title %}
-Patient Dashboard
-{% endblock %}
+{% block title %}Patient Dashboard{% endblock %}
 
 {% block content %}
 <div class="bg-gradient-to-br from-[#dfe2ff] via-[#cbc1fa] to-[#a7c0f9] min-h-screen">
 
   <main class="max-w-6xl mx-auto px-6 pt-10 pb-20">
 
-    <div class="flex flex-col md:flex-row justify-between mb-8">
-      <div>
-        <h2 class="text-3xl font-extrabold text-violet-800">
-          Welcome, {{ request.user.username }} 👋
-        </h2>
-        <p class="text-indigo-600">
-          Your health summary (design only)
-        </p>
-      </div>
+    <!-- Header -->
+    <div class="mb-8">
+      <h2 class="text-3xl font-extrabold text-violet-800">
+        Welcome, {{ request.user.username }} 👋
+      </h2>
+      <p class="text-indigo-600">
+        Your health summary
+      </p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
 
       <!-- Appointments -->
-      <div class="glass p-8 shadow">
-        <h3 class="font-bold text-indigo-800 mb-2">Appointments</h3>
+      <div class="glass p-8 shadow xl:col-span-2">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="font-bold text-indigo-800 text-lg">Appointments</h3>
 
-        <a
-          href="{% url 'available_slots' doctor_id=doctor.id %}"
-          class="inline-block mt-3 px-5 py-2 rounded-full
-                 bg-gradient-to-r from-indigo-400 to-violet-500
-                 text-white font-bold shadow hover:opacity-90">
-          Book New Appointment
-        </a>
-        
+          <!-- SAFE booking link -->
+          <a
+            href="{% url 'doctors_list' %}"
+            class="px-4 py-2 rounded-full
+                   bg-gradient-to-r from-indigo-400 to-violet-500
+                   text-white font-bold shadow hover:opacity-90">
+            Book New Appointment
+          </a>
+        </div>
 
-        <p class="text-indigo-600 mt-2">
-          No upcoming appointments
-        </p>
+        {% if appointments %}
+        <table class="w-full text-sm">
+          <tr class="border-b font-semibold text-left text-indigo-700">
+            <th class="py-2">Doctor</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Status</th>
+          </tr>
+
+          {% for a in appointments %}
+          <tr class="border-b">
+            <td class="py-2">Dr. {{ a.slot.doctor.username }}</td>
+            <td>{{ a.slot.date }}</td>
+            <td>{{ a.slot.start_time }} - {{ a.slot.end_time }}</td>
+            <td>
+              {% if a.status == "PENDING" %}
+                <span class="text-yellow-600 font-semibold">Pending</span>
+              {% elif a.status == "APPROVED" %}
+                <span class="text-green-600 font-semibold">Approved</span>
+              {% else %}
+                <span class="text-red-600 font-semibold">Cancelled</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </table>
+        {% else %}
+          <p class="text-indigo-600">No appointments yet.</p>
+        {% endif %}
       </div>
 
       <!-- Consultation -->
       <div class="glass p-8 shadow">
         <h3 class="font-bold text-indigo-800 mb-2">Consultation</h3>
-        <p class="text-indigo-600">Join button later</p>
+        <p class="text-indigo-600">
+          Video call will appear after approval
+        </p>
       </div>
 
       <!-- Prescriptions -->
       <div class="glass p-8 shadow">
         <h3 class="font-bold text-indigo-800 mb-2">Prescriptions</h3>
-        <p class="text-indigo-600">Prescription list later</p>
+        <p class="text-indigo-600">
+          Prescription list will appear here
+        </p>
       </div>
 
       <!-- Health Records -->
