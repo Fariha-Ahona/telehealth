@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto mt-10">
+
+  <h1 class="text-3xl font-bold text-indigo-800 mb-6">
+    Admin – Doctor Approval
+  </h1>
+
+  <div class="bg-white shadow rounded p-6 mb-10">
+    <h2 class="text-xl font-semibold mb-4">Pending Doctors</h2>
+
+    {% if pending_doctors %}
+      <table class="w-full">
+        <tr class="border-b text-left">
+          <th>Username</th>
+          <th>Email</th>
+          <th>Action</th>
+        </tr>
+
+        {% for d in pending_doctors %}
+        <tr class="border-b">
+          <td>{{ d.username }}</td>
+          <td>{{ d.email }}</td>
+          <td>
+            <a href="{% url 'approve_doctor' d.id %}"
+               class="bg-green-500 text-white px-3 py-1 rounded">
+              Approve
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    {% else %}
+      <p class="text-gray-500">No pending doctors.</p>
+    {% endif %}
+  </div>
+
+  <div class="bg-white shadow rounded p-6">
+    <h2 class="text-xl font-semibold mb-4">Approved Doctors</h2>
+
+    <ul class="list-disc pl-6">
+      {% for d in approved_doctors %}
+        <li>{{ d.username }} ({{ d.email }})</li>
+      {% empty %}
+        <li>No approved doctors yet.</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+</div>
+{% endblock %}

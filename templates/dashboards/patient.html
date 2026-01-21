@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}
+Patient Dashboard
+{% endblock %}
+
+{% block content %}
+<div class="bg-gradient-to-br from-[#dfe2ff] via-[#cbc1fa] to-[#a7c0f9] min-h-screen">
+
+  <main class="max-w-6xl mx-auto px-6 pt-10 pb-20">
+
+    <div class="flex flex-col md:flex-row justify-between mb-8">
+      <div>
+        <h2 class="text-3xl font-extrabold text-violet-800">
+          Welcome, {{ request.user.username }} 👋
+        </h2>
+        <p class="text-indigo-600">
+          Your health summary (design only)
+        </p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+
+      <!-- Appointments -->
+      <div class="glass p-8 shadow">
+        <h3 class="font-bold text-indigo-800 mb-2">Appointments</h3>
+
+        <a
+          href="{% url 'available_slots' doctor_id=doctor.id %}"
+          class="inline-block mt-3 px-5 py-2 rounded-full
+                 bg-gradient-to-r from-indigo-400 to-violet-500
+                 text-white font-bold shadow hover:opacity-90">
+          Book New Appointment
+        </a>
+        
+
+        <p class="text-indigo-600 mt-2">
+          No upcoming appointments
+        </p>
+      </div>
+
+      <!-- Consultation -->
+      <div class="glass p-8 shadow">
+        <h3 class="font-bold text-indigo-800 mb-2">Consultation</h3>
+        <p class="text-indigo-600">Join button later</p>
+      </div>
+
+      <!-- Prescriptions -->
+      <div class="glass p-8 shadow">
+        <h3 class="font-bold text-indigo-800 mb-2">Prescriptions</h3>
+        <p class="text-indigo-600">Prescription list later</p>
+      </div>
+
+      <!-- Health Records -->
+      <div class="glass p-8 shadow">
+        <h3 class="font-bold text-indigo-800 mb-2">Health Records</h3>
+        <p class="text-indigo-600">EHR view later</p>
+      </div>
+
+      <!-- Reminders -->
+      <div class="glass p-8 shadow">
+        <h3 class="font-bold text-indigo-800 mb-2">Reminders</h3>
+        <p class="text-indigo-600">Medication reminders</p>
+      </div>
+
+      <!-- Profile -->
+      <div class="glass p-8 shadow">
+        <h3 class="font-bold text-indigo-800 mb-2">Profile</h3>
+        <p class="text-indigo-600">
+          {{ request.user.email }}
+        </p>
+      </div>
+
+    </div>
+  </main>
+</div>
+{% endblock %}

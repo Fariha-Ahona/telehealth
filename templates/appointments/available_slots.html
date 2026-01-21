@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Choose Slot{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto mt-10 glass p-8">
+  <h2 class="text-2xl font-bold mb-4">Choose a Slot</h2>
+
+  {% if slots %}
+    <ul class="space-y-3">
+      {% for slot in slots %}
+        <li class="flex justify-between items-center border-b pb-2">
+          <span>
+            {{ slot.date }} |
+            {{ slot.start_time }} - {{ slot.end_time }}
+          </span>
+          <a
+            href="{% url 'book_appointment' slot.id %}"
+            class="bg-violet-600 text-white px-4 py-2 rounded"
+          >
+            Book
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No slots available</p>
+  {% endif %}
+</div>
+{% endblock %}
