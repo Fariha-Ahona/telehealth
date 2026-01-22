@@ -1,9 +1,9 @@
-{% extends 'base.html' %}
-{% block title %}Home | Telehealth{% endblock %}
-
-{% block content %}
+{% extends 'base.html' %} {% block title %}Home | Telehealth{% endblock %}
+{%block content %}
 <!-- Hero Section -->
-<section class="relative pb-16 pt-12 min-h-[400px] flex justify-center items-center">
+<section
+  class="relative pb-16 pt-12 min-h-[400px] h-screen flex justify-center items-center"
+>
   <div class="text-center">
     <h1 class="text-5xl font-extrabold text-violet-600 mb-4">
       Accessible Healthcare for Everyone
@@ -11,9 +11,11 @@
     <p class="text-lg text-indigo-900 mb-6">
       Get medical consultations from anywhere.
     </p>
-    <a href="{% url 'register' %}"
-       class="px-8 py-3 bg-indigo-500 text-white rounded hover:bg-indigo-600">
-       Register Now
+    <a
+      href="{% url 'register' %}"
+      class="px-8 py-3 bg-indigo-500 text-white rounded hover:bg-indigo-600"
+    >
+      Register Now
     </a>
   </div>
 </section>

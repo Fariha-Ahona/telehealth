@@ -1,15 +1,17 @@
 {% extends "base.html" %}
 
-{% block title %}Doctor Dashboard{% endblock %}
+{% block title %}
+Doctor Dashboard
+{% endblock %}
 
 {% block content %}
-<div class="bg-gradient-to-br from-[#dfe2ff] via-[#cbc1fa] to-[#a7c0f9] min-h-screen py-10">
 
+<div
+  class="bg-gradient-to-br from-[#dfe2ff] via-[#cbc1fa] to-[#a7c0f9] min-h-screen py-10"
+>
   <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-3 gap-10">
-
     <!-- LEFT COLUMN -->
     <div class="flex flex-col gap-7">
-
       <!-- Doctor Info -->
       <div class="glass p-6 shadow-lg flex items-center gap-5">
         <img
@@ -46,12 +48,10 @@
           <strong>Email:</strong> {{ request.user.email }}
         </p>
       </div>
-
     </div>
 
     <!-- RIGHT COLUMN -->
     <div class="col-span-2 flex flex-col gap-7">
-
       <!-- Appointment Requests -->
       <div class="glass p-7 shadow">
         <h2 class="text-xl font-bold text-indigo-800 mb-4">
@@ -72,23 +72,53 @@
             <td>{{ a.patient.username }}</td>
             <td>{{ a.slot.date }}</td>
             <td>{{ a.slot.start_time }} - {{ a.slot.end_time }}</td>
-            <td class="flex gap-2 py-2">
-              <a
-                href="{% url 'approve_appointment' a.id %}"
-                class="px-3 py-1 bg-green-500 text-white rounded text-xs"
-              >
-                Approve
-              </a>
-              <a
-                href="{% url 'reject_appointment' a.id %}"
-                class="px-3 py-1 bg-red-500 text-white rounded text-xs"
-              >
-                Reject
-              </a>
-            </td>
+
+            <td class="space-x-2">
+
+  {% if a.status == "PENDING" %}
+    <a href="{% url 'approve_appointment' a.id %}"
+       class="px-3 py-1 bg-green-500 text-white rounded text-xs">
+      Approve
+    </a>
+
+    <a href="{% url 'reject_appointment' a.id %}"
+       class="px-3 py-1 bg-red-500 text-white rounded text-xs">
+      Reject
+    </a>
+
+  {% elif a.status == "APPROVED" and a.consultation_status == "NOT_STARTED" %}
+    <span class="text-green-700 font-semibold text-sm">
+      Approved
+    </span>
+
+    <span class="text-indigo-600 text-sm">
+      Waiting to start
+    </span>
+
+    <a href="{% url 'start_consultation' a.id %}"
+       class="px-3 py-1 bg-indigo-600 text-white rounded text-xs">
+      Start Consultation
+    </a>
+
+  {% elif a.consultation_status == "ONGOING" %}
+    <a
+  href="{% url 'start_consultation' a.id %}" class="text-blue-600 font-semibold text-sm">
+      Resume Consultation
+    </a>
+
+  {% elif a.consultation_status == "COMPLETED" %}
+    <span class="text-gray-600 text-sm">
+      Consultation Completed
+    </span>
+
+  {% endif %}
+
+</td>
+
           </tr>
           {% endfor %}
         </table>
+
         {% else %}
         <p class="text-indigo-600 text-sm">No appointment requests yet.</p>
         {% endif %}
@@ -101,9 +131,7 @@
           Firebase notifications will appear here
         </p>
       </div>
-
     </div>
-
   </div>
 </div>
 {% endblock %}

@@ -1,24 +1,24 @@
 {% extends "base.html" %}
 
-{% block title %}Patient Dashboard{% endblock %}
+{% block title %}
+Doctor Dashboard
+{% endblock %}
 
 {% block content %}
-<div class="bg-gradient-to-br from-[#dfe2ff] via-[#cbc1fa] to-[#a7c0f9] min-h-screen">
 
+<div
+  class="bg-gradient-to-br from-[#dfe2ff] via-[#cbc1fa] to-[#a7c0f9] min-h-screen"
+>
   <main class="max-w-6xl mx-auto px-6 pt-10 pb-20">
-
     <!-- Header -->
     <div class="mb-8">
       <h2 class="text-3xl font-extrabold text-violet-800">
         Welcome, {{ request.user.username }} 👋
       </h2>
-      <p class="text-indigo-600">
-        Your health summary
-      </p>
+      <p class="text-indigo-600">Your health summary</p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-
       <!-- Appointments -->
       <div class="glass p-8 shadow xl:col-span-2">
         <div class="flex justify-between items-center mb-4">
@@ -27,9 +27,8 @@
           <!-- SAFE booking link -->
           <a
             href="{% url 'doctors_list' %}"
-            class="px-4 py-2 rounded-full
-                   bg-gradient-to-r from-indigo-400 to-violet-500
-                   text-white font-bold shadow hover:opacity-90">
+            class="px-4 py-2 rounded-full bg-gradient-to-r from-indigo-400 to-violet-500 text-white font-bold shadow hover:opacity-90"
+          >
             Book New Appointment
           </a>
         </div>
@@ -50,35 +49,39 @@
             <td>{{ a.slot.start_time }} - {{ a.slot.end_time }}</td>
             <td>
               {% if a.status == "PENDING" %}
-                <span class="text-yellow-600 font-semibold">Pending</span>
+                🟡 Pending Approval
+
               {% elif a.status == "APPROVED" %}
-                <span class="text-green-600 font-semibold">Approved</span>
-              {% else %}
-                <span class="text-red-600 font-semibold">Cancelled</span>
+                🟢 Approved
+                {% if a.consultation_status == "NOT_STARTED" %}
+                  <div class="text-sm text-indigo-600">
+                    Waiting for consultation
+                  </div>
+                {% endif %}
+
+              {% elif a.status == "REJECTED" %}
+                🔴 Rejected
               {% endif %}
             </td>
+
           </tr>
           {% endfor %}
         </table>
         {% else %}
-          <p class="text-indigo-600">No appointments yet.</p>
+        <p class="text-indigo-600">No appointments yet.</p>
         {% endif %}
       </div>
 
       <!-- Consultation -->
       <div class="glass p-8 shadow">
         <h3 class="font-bold text-indigo-800 mb-2">Consultation</h3>
-        <p class="text-indigo-600">
-          Video call will appear after approval
-        </p>
+        <p class="text-indigo-600">Video call will appear after approval</p>
       </div>
 
       <!-- Prescriptions -->
       <div class="glass p-8 shadow">
         <h3 class="font-bold text-indigo-800 mb-2">Prescriptions</h3>
-        <p class="text-indigo-600">
-          Prescription list will appear here
-        </p>
+        <p class="text-indigo-600">Prescription list will appear here</p>
       </div>
 
       <!-- Health Records -->
@@ -96,11 +99,8 @@
       <!-- Profile -->
       <div class="glass p-8 shadow">
         <h3 class="font-bold text-indigo-800 mb-2">Profile</h3>
-        <p class="text-indigo-600">
-          {{ request.user.email }}
-        </p>
+        <p class="text-indigo-600">{{ request.user.email }}</p>
       </div>
-
     </div>
   </main>
 </div>

@@ -75,67 +75,14 @@ def book_appointment(request, slot_id):
 @login_required
 def doctor_dashboard(request):
     appointments = Appointment.objects.filter(
-        slot__doctor=request.user,
-        status="PENDING"
-    ).select_related("patient", "slot")
+    slot__doctor=request.user
+).select_related("patient", "slot").order_by("-created_at")
+
 
     return render(request, "dashboards/doctor.html", {
         "appointments": appointments
     })
-
-
-# =========================
-# DOCTOR: APPROVE APPOINTMENT
-# =========================
-@login_required
-def approve_appointment(request, appointment_id):
-    appointment = get_object_or_404(
-        Appointment,
-        id=appointment_id,
-        slot__doctor=request.user
-    )
-
-    if appointment.status != "PENDING":
-        messages.warning(request, "This appointment is already processed.")
-        return redirect("doctor_dashboard")
-
-    appointment.status = "APPROVED"
-    appointment.save()
-
-    # Now lock the slot
-    appointment.slot.is_booked = True
-    appointment.slot.save()
-
-    messages.success(request, "Appointment approved successfully ✅")
-    return redirect("doctor_dashboard")
-
-
-# =========================
-# DOCTOR: REJECT APPOINTMENT
-# =========================
-@login_required
-def reject_appointment(request, appointment_id):
-    appointment = get_object_or_404(
-        Appointment,
-        id=appointment_id,
-        slot__doctor=request.user
-    )
-
-    if appointment.status != "PENDING":
-        messages.warning(request, "This appointment is already processed.")
-        return redirect("doctor_dashboard")
-
-    appointment.status = "CANCELLED"
-    appointment.save()
-
-    # Slot stays available for others
-    appointment.slot.is_booked = False
-    appointment.slot.save()
-
-    messages.success(request, "Appointment rejected ❌")
-    return redirect("doctor_dashboard")
-# =========================
-# PATIENT: DASHBOARD (VIEW APPOINTMENTS)    
+ 
 @login_required
 def patient_dashboard(request):
     appointments = Appointment.objects.filter(
@@ -155,3 +102,50 @@ def doctors_list(request):
     return render(request, "appointments/doctors_list.html", {
         "doctors": doctors
     })
+@login_required
+def approve_appointment(request, appointment_id):
+    appointment = get_object_or_404(
+        Appointment,
+        id=appointment_id,
+        slot__doctor=request.user
+    )
+
+    appointment.status = "APPROVED"
+    appointment.consultation_status = "NOT_STARTED"
+    appointment.save()
+
+    return redirect("doctor_dashboard")
+
+
+
+@login_required
+def reject_appointment(request, appointment_id):
+    appointment = get_object_or_404(
+        Appointment,
+        id=appointment_id,
+        slot__doctor=request.user
+    )
+
+    appointment.status = "REJECTED"
+    appointment.save()
+
+    return redirect("doctor_dashboard")
+
+
+@login_required
+def start_consultation(request, appointment_id):
+    appointment = get_object_or_404(
+        Appointment,
+        id=appointment_id,
+        slot__doctor=request.user
+    )
+
+    appointment.consultation_status = "ONGOING"
+    appointment.save()
+
+    return render(
+        request,
+        "appointments/start_consultation.html",
+        {"appointment": appointment}
+    )
+
