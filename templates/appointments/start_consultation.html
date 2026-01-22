@@ -3,12 +3,11 @@
 {% block title %}Start Consultation{% endblock %}
 
 {% block content %}
-<div class="bg-gradient-to-br from-[#dfe2ff] via-[#cbc1fa] to-[#a7c0f9] min-h-screen py-16">
-
+<div
+  class="bg-gradient-to-br from-[#dfe2ff] via-[#cbc1fa] to-[#a7c0f9] min-h-screen py-16"
+>
   <div class="max-w-3xl mx-auto px-6">
-
     <div class="glass p-8 shadow-lg text-center">
-
       <h1 class="text-2xl font-bold text-indigo-800 mb-4">
         Consultation Started
       </h1>
@@ -17,7 +16,9 @@
         The consultation has been successfully started.
       </p>
 
-      <div class="bg-white/60 rounded-lg p-5 text-left text-sm text-indigo-700 mb-6">
+      <div
+        class="bg-white/60 rounded-lg p-5 text-left text-sm text-indigo-700 mb-6"
+      >
         <p><strong>Patient:</strong> {{ appointment.patient.username }}</p>
         <p><strong>Date:</strong> {{ appointment.slot.date }}</p>
         <p>
@@ -33,18 +34,18 @@
       </div>
 
       <!-- Zoom placeholder -->
-      <div class="mb-6">
-        <p class="text-sm text-indigo-500 mb-2">
-          Video consultation link will appear here
-        </p>
+      <h2>Consultation Started</h2>
 
-        <button
-          disabled
-          class="px-4 py-2 bg-gray-400 text-white rounded cursor-not-allowed text-sm"
-        >
-          Zoom Link (Coming Soon)
-        </button>
-      </div>
+      <p>Patient: {{ appointment.patient.username }}</p>
+      <p>Status: {{ appointment.consultation_status }}</p>
+
+      <a href="{{ appointment.zoom_start_url }}" target="_blank">
+        Start Zoom Meeting
+      </a>
+
+      <a href="{% url 'write_prescription' appointment.id %}">
+        Write Prescription
+      </a>
 
       <a
         href="{% url 'doctor_dashboard' %}"
@@ -52,9 +53,7 @@
       >
         Back to Dashboard
       </a>
-
     </div>
-
   </div>
 </div>
 {% endblock %}

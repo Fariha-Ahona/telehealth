@@ -12,5 +12,6 @@ urlpatterns = [
     path("reject/<int:appointment_id>/", views.reject_appointment, name="reject_appointment"),
     path("doctor/consultation/start/<int:appointment_id>/", views.start_consultation, name="start_consultation"),
     path("start-consultation/<int:appointment_id>/",views.start_consultation,name="start_consultation"),
+    path("prescription/<int:appointment_id>/", views.write_prescription, name="write_prescription"),
     
 ]
