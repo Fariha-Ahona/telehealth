@@ -1,35 +1,34 @@
 {% extends "base.html" %}
 
 {% block title %}
-Doctor Dashboard
+Patient Dashboard
 {% endblock %}
 
 {% block content %}
 
-<div
-  class="bg-gradient-to-br from-[#dfe2ff] via-[#cbc1fa] to-[#a7c0f9] min-h-screen"
->
+<div class="bg-gradient-to-br from-[#dfe2ff] via-[#cbc1fa] to-[#a7c0f9] min-h-screen">
   <main class="max-w-6xl mx-auto px-6 pt-10 pb-20">
+
     <!-- Header -->
     <div class="mb-8">
       <h2 class="text-3xl font-extrabold text-violet-800">
         Welcome, {{ request.user.username }} 👋
       </h2>
-      <p class="text-indigo-600">Your health summary</p>
+      <p class="text-indigo-600">Your appointments & prescriptions</p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-      <!-- Appointments -->
-      <div class="glass p-8 shadow xl:col-span-2">
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+
+      <!-- ================= APPOINTMENTS ================= -->
+      <div class="glass p-8 shadow">
         <div class="flex justify-between items-center mb-4">
           <h3 class="font-bold text-indigo-800 text-lg">Appointments</h3>
 
-          <!-- SAFE booking link -->
           <a
             href="{% url 'doctors_list' %}"
-            class="px-4 py-2 rounded-full bg-gradient-to-r from-indigo-400 to-violet-500 text-white font-bold shadow hover:opacity-90"
+            class="px-4 py-2 rounded-full bg-gradient-to-r from-indigo-500 to-violet-600 text-white font-semibold shadow hover:opacity-90"
           >
-            Book New Appointment
+            Book Appointment
           </a>
         </div>
 
@@ -54,8 +53,16 @@ Doctor Dashboard
               {% elif a.status == "APPROVED" %}
                 🟢 Approved
                 {% if a.consultation_status == "NOT_STARTED" %}
-                  <div class="text-sm text-indigo-600">
+                  <div class="text-xs text-indigo-600">
                     Waiting for consultation
+                  </div>
+                {% elif a.consultation_status == "ONGOING" %}
+                  <div class="text-xs text-blue-600">
+                    Consultation ongoing
+                  </div>
+                {% elif a.consultation_status == "COMPLETED" %}
+                  <div class="text-xs text-green-700">
+                    Consultation completed
                   </div>
                 {% endif %}
 
@@ -63,45 +70,58 @@ Doctor Dashboard
                 🔴 Rejected
               {% endif %}
             </td>
-
           </tr>
           {% endfor %}
         </table>
         {% else %}
-        <p class="text-indigo-600">No appointments yet.</p>
+          <p class="text-indigo-600">No appointments yet.</p>
         {% endif %}
       </div>
 
-      <!-- Consultation -->
+      <!-- ================= PRESCRIPTIONS ================= -->
       <div class="glass p-8 shadow">
-        <h3 class="font-bold text-indigo-800 mb-2">Consultation</h3>
-        <p class="text-indigo-600">Video call will appear after approval</p>
+        <h3 class="font-bold text-indigo-800 mb-4">Prescriptions</h3>
+
+        {% with has_prescription=False %}
+        {% for a in appointments %}
+          {% if a.consultation_status == "COMPLETED" and a.prescription_pdf %}
+            {% with has_prescription=True %}
+            <div class="border p-4 rounded mb-3 bg-white/40">
+              <p><strong>Doctor:</strong> Dr. {{ a.slot.doctor.username }}</p>
+              <p class="text-sm text-gray-700">
+                Date: {{ a.slot.date }}
+              </p>
+
+              <a
+                href="{{ a.prescription_pdf.url }}"
+                target="_blank"
+                class="inline-block mt-2 text-indigo-600 font-semibold underline"
+              >
+                Download Prescription
+              </a>
+            </div>
+            {% endwith %}
+          {% endif %}
+        {% endfor %}
+
+        {% if not has_prescription %}
+          <p class="text-indigo-600">No prescriptions yet.</p>
+        {% endif %}
+        {% endwith %}
       </div>
 
-      <!-- Prescriptions -->
-      <div class="glass p-8 shadow">
-        <h3 class="font-bold text-indigo-800 mb-2">Prescriptions</h3>
-        <p class="text-indigo-600">Prescription list will appear here</p>
-      </div>
-
-      <!-- Health Records -->
-      <div class="glass p-8 shadow">
-        <h3 class="font-bold text-indigo-800 mb-2">Health Records</h3>
-        <p class="text-indigo-600">EHR view later</p>
-      </div>
-
-      <!-- Reminders -->
-      <div class="glass p-8 shadow">
-        <h3 class="font-bold text-indigo-800 mb-2">Reminders</h3>
-        <p class="text-indigo-600">Medication reminders</p>
-      </div>
-
-      <!-- Profile -->
-      <div class="glass p-8 shadow">
-        <h3 class="font-bold text-indigo-800 mb-2">Profile</h3>
-        <p class="text-indigo-600">{{ request.user.email }}</p>
-      </div>
     </div>
+
+    <!-- ================= PROFILE ================= -->
+    <div class="glass p-8 shadow mt-8 max-w-md">
+      <h3 class="font-bold text-indigo-800 mb-2">Profile</h3>
+      <p class="text-indigo-700">
+        <strong>Name:</strong> {{ request.user.username }} <br />
+        <strong>Email:</strong> {{ request.user.email }}
+      </p>
+    </div>
+
   </main>
 </div>
+
 {% endblock %}

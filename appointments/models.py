@@ -47,10 +47,16 @@ class Appointment(models.Model):
         choices=CONSULTATION_STATUS,
         default="NOT_STARTED"
     )
+    prescription = models.TextField(blank=True, null=True)
+
+    prescription_pdf = models.FileField(
+        upload_to="prescriptions/",
+        blank=True,
+        null=True
+    )
 
     zoom_start_url = models.URLField(blank=True, null=True)
     zoom_join_url = models.URLField(blank=True, null=True)
-    prescription = models.TextField(blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
 

@@ -129,3 +129,7 @@ load_dotenv(BASE_DIR / ".env")
 ZOOM_ACCOUNT_ID = os.getenv("ZOOM_ACCOUNT_ID")
 ZOOM_CLIENT_ID = os.getenv("ZOOM_CLIENT_ID")
 ZOOM_CLIENT_SECRET = os.getenv("ZOOM_CLIENT_SECRET")
+import os
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")

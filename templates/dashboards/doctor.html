@@ -106,10 +106,13 @@ Doctor Dashboard
       Resume Consultation
     </a>
 
-  {% elif a.consultation_status == "COMPLETED" %}
-    <span class="text-gray-600 text-sm">
-      Consultation Completed
-    </span>
+  {% elif a.consultation_status == "COMPLETED" and a.prescription_pdf %}
+    <a
+    href="{{ a.prescription_pdf.url }}"
+    target="_blank"
+    class="px-3 py-1 bg-indigo-600 text-white rounded text-xs">
+        View Prescription
+    </a>
 
   {% endif %}
 

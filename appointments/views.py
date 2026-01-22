@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 
 from .models import DoctorAvailableSlot, Appointment
+from .utils.prescription_pdf import generate_prescription_pdf
 
 
 # =========================
@@ -84,13 +85,19 @@ def doctor_dashboard(request):
  
 @login_required
 def patient_dashboard(request):
-    appointments = Appointment.objects.filter(
-        patient=request.user
-    ).select_related("slot", "slot__doctor").order_by("-created_at")
+    appointments = (
+        Appointment.objects
+        .filter(patient=request.user)
+        .select_related("slot", "slot__doctor")
+        .order_by("-created_at")
+    )
 
-    return render(request, "dashboards/patient.html", {
-        "appointments": appointments
-    })
+    return render(
+        request,
+        "dashboards/patient.html",
+        {"appointments": appointments}
+    )
+
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -185,8 +192,11 @@ def write_prescription(request, appointment_id):
     if request.method == "POST":
         appointment.prescription = request.POST.get("prescription")
         appointment.consultation_status = "COMPLETED"
-        appointment.save()
 
+        pdf_file = generate_prescription_pdf(appointment)
+        appointment.prescription_pdf = pdf_file
+
+        appointment.save()
         return redirect("doctor_dashboard")
 
     return render(
@@ -194,5 +204,3 @@ def write_prescription(request, appointment_id):
         "appointments/write_prescription.html",
         {"appointment": appointment}
     )
-
-
