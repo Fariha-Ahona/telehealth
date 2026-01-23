@@ -1,127 +1,137 @@
 {% extends "base.html" %}
 
-{% block title %}
-Patient Dashboard
-{% endblock %}
+{% block title %}Patient Dashboard{% endblock %}
 
 {% block content %}
-
-<div class="bg-gradient-to-br from-[#dfe2ff] via-[#cbc1fa] to-[#a7c0f9] min-h-screen">
-  <main class="max-w-6xl mx-auto px-6 pt-10 pb-20">
+<div class="bg-gradient-to-br from-[#dfe2ff] via-[#cbc1fa] to-[#a7c0f9] min-h-screen py-10">
+  <div class="max-w-6xl mx-auto px-6">
 
     <!-- Header -->
-    <div class="mb-8">
-      <h2 class="text-3xl font-extrabold text-violet-800">
-        Welcome, {{ request.user.username }} 👋
-      </h2>
-      <p class="text-indigo-600">Your appointments & prescriptions</p>
+    <h2 class="text-3xl font-bold text-violet-800 mb-2">
+      Welcome, {{ request.user.username }}
+    </h2>
+    <p class="text-indigo-600 mb-8">Your appointments & prescriptions</p>
+
+    <!-- Book button -->
+    <div class="mb-6">
+      <a href="{% url 'doctors_list' %}"
+         class="px-5 py-2 bg-indigo-600 text-white rounded font-semibold">
+        Book New Appointment
+      </a>
     </div>
 
-    <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+    <!-- Appointments -->
+    <div class="glass p-6 shadow">
+      <h3 class="text-xl font-bold text-indigo-800 mb-4">
+        My Appointments
+      </h3>
 
-      <!-- ================= APPOINTMENTS ================= -->
-      <div class="glass p-8 shadow">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="font-bold text-indigo-800 text-lg">Appointments</h3>
+      {% if appointments %}
+      <table class="w-full text-sm">
+        <tr class="border-b font-semibold text-left">
+          <th>Doctor</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Status</th>
+          <th>Consultation</th>
+          <th>Prescription</th>
+        </tr>
 
-          <a
-            href="{% url 'doctors_list' %}"
-            class="px-4 py-2 rounded-full bg-gradient-to-r from-indigo-500 to-violet-600 text-white font-semibold shadow hover:opacity-90"
-          >
-            Book Appointment
-          </a>
-        </div>
-
-        {% if appointments %}
-        <table class="w-full text-sm">
-          <tr class="border-b font-semibold text-left text-indigo-700">
-            <th class="py-2">Doctor</th>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Status</th>
-          </tr>
-
-          {% for a in appointments %}
-          <tr class="border-b">
-            <td class="py-2">Dr. {{ a.slot.doctor.username }}</td>
-            <td>{{ a.slot.date }}</td>
-            <td>{{ a.slot.start_time }} - {{ a.slot.end_time }}</td>
-            <td>
-              {% if a.status == "PENDING" %}
-                🟡 Pending Approval
-
-              {% elif a.status == "APPROVED" %}
-                🟢 Approved
-                {% if a.consultation_status == "NOT_STARTED" %}
-                  <div class="text-xs text-indigo-600">
-                    Waiting for consultation
-                  </div>
-                {% elif a.consultation_status == "ONGOING" %}
-                  <div class="text-xs text-blue-600">
-                    Consultation ongoing
-                  </div>
-                {% elif a.consultation_status == "COMPLETED" %}
-                  <div class="text-xs text-green-700">
-                    Consultation completed
-                  </div>
-                {% endif %}
-
-              {% elif a.status == "REJECTED" %}
-                🔴 Rejected
-              {% endif %}
-            </td>
-          </tr>
-          {% endfor %}
-        </table>
-        {% else %}
-          <p class="text-indigo-600">No appointments yet.</p>
-        {% endif %}
-      </div>
-
-      <!-- ================= PRESCRIPTIONS ================= -->
-      <div class="glass p-8 shadow">
-        <h3 class="font-bold text-indigo-800 mb-4">Prescriptions</h3>
-
-        {% with has_prescription=False %}
         {% for a in appointments %}
-          {% if a.consultation_status == "COMPLETED" and a.prescription_pdf %}
-            {% with has_prescription=True %}
-            <div class="border p-4 rounded mb-3 bg-white/40">
-              <p><strong>Doctor:</strong> Dr. {{ a.slot.doctor.username }}</p>
-              <p class="text-sm text-gray-700">
-                Date: {{ a.slot.date }}
+        <tr class="border-t">
+
+          <!-- Doctor -->
+          <td class="py-2">
+            Dr. {{ a.slot.doctor.username }}
+          </td>
+
+          <!-- Date -->
+          <td>
+            {{ a.slot.date }}
+          </td>
+
+          <!-- Time -->
+          <td>
+            {{ a.slot.start_time }} – {{ a.slot.end_time }}
+          </td>
+
+          <!-- STATUS -->
+          <td class="font-semibold text-indigo-700">
+            {% if a.status == "APPROVED" and a.consultation_status == "COMPLETED" %}
+              COMPLETED
+            {% elif a.status == "APPROVED" %}
+              APPROVED
+            {% elif a.status == "PENDING" %}
+              PENDING
+            {% else %}
+              REJECTED
+            {% endif %}
+          </td>
+
+          <!-- ✅ ZOOM JOIN (PATIENT) -->
+          <td>
+            {% if a.consultation_status == "ONGOING" and a.zoom_join_url %}
+              <a
+                href="{{ a.zoom_join_url }}"
+                target="_blank"
+                class="px-3 py-1 bg-indigo-600 text-white rounded text-xs font-semibold"
+              >
+                Join Zoom
+              </a>
+
+            {% elif a.status == "APPROVED" and a.consultation_status == "NOT_STARTED" %}
+              <span class="text-indigo-500 text-sm">
+                Waiting for doctor
+              </span>
+
+            {% else %}
+              <span class="text-gray-400 text-sm">—</span>
+            {% endif %}
+          </td>
+
+          <!-- ✅ PRESCRIPTION -->
+          <td class="max-w-sm">
+            {% if a.prescription %}
+              <p class="text-sm text-indigo-700 truncate">
+                {{ a.prescription|truncatechars:40 }}
               </p>
 
-              <a
-                href="{{ a.prescription_pdf.url }}"
-                target="_blank"
-                class="inline-block mt-2 text-indigo-600 font-semibold underline"
+              <button
+                onclick="openPrescription('{{ a.id }}')"
+                class="mt-1 text-xs text-indigo-600 font-semibold underline"
               >
-                Download Prescription
-              </a>
-            </div>
-            {% endwith %}
-          {% endif %}
+                Read more
+              </button>
+
+              <div
+                id="prescription-{{ a.id }}"
+                class="hidden mt-2 p-3 bg-white rounded shadow text-sm text-gray-800"
+              >
+                {{ a.prescription|linebreaks }}
+              </div>
+            {% else %}
+              <span class="text-gray-400 text-sm">—</span>
+            {% endif %}
+          </td>
+
+        </tr>
         {% endfor %}
+      </table>
 
-        {% if not has_prescription %}
-          <p class="text-indigo-600">No prescriptions yet.</p>
-        {% endif %}
-        {% endwith %}
-      </div>
-
+      {% else %}
+        <p class="text-indigo-600">No appointments yet.</p>
+      {% endif %}
     </div>
 
-    <!-- ================= PROFILE ================= -->
-    <div class="glass p-8 shadow mt-8 max-w-md">
-      <h3 class="font-bold text-indigo-800 mb-2">Profile</h3>
-      <p class="text-indigo-700">
-        <strong>Name:</strong> {{ request.user.username }} <br />
-        <strong>Email:</strong> {{ request.user.email }}
-      </p>
-    </div>
-
-  </main>
+  </div>
 </div>
+
+<!-- Toggle prescription -->
+<script>
+  function openPrescription(id) {
+    const el = document.getElementById("prescription-" + id);
+    el.classList.toggle("hidden");
+  }
+</script>
 
 {% endblock %}

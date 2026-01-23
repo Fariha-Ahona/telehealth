@@ -6,12 +6,12 @@ Doctor Dashboard
 
 {% block content %}
 
-<div
-  class="bg-gradient-to-br from-[#dfe2ff] via-[#cbc1fa] to-[#a7c0f9] min-h-screen py-10"
->
+<div class="bg-gradient-to-br from-[#dfe2ff] via-[#cbc1fa] to-[#a7c0f9] min-h-screen py-10">
   <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-3 gap-10">
+
     <!-- LEFT COLUMN -->
     <div class="flex flex-col gap-7">
+
       <!-- Doctor Info -->
       <div class="glass p-6 shadow-lg flex items-center gap-5">
         <img
@@ -23,7 +23,7 @@ Doctor Dashboard
             Dr. {{ request.user.username }}
           </h2>
           <p class="text-indigo-600 text-sm">
-            Manage your appointments & approvals
+            Manage your appointments & consultations
           </p>
         </div>
       </div>
@@ -48,10 +48,12 @@ Doctor Dashboard
           <strong>Email:</strong> {{ request.user.email }}
         </p>
       </div>
+
     </div>
 
     <!-- RIGHT COLUMN -->
     <div class="col-span-2 flex flex-col gap-7">
+
       <!-- Appointment Requests -->
       <div class="glass p-7 shadow">
         <h2 class="text-xl font-bold text-indigo-800 mb-4">
@@ -60,70 +62,81 @@ Doctor Dashboard
 
         {% if appointments %}
         <table class="w-full text-sm">
-          <tr class="border-b font-semibold text-left">
-            <th>Patient</th>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Action</th>
-          </tr>
+          <thead>
+            <tr class="border-b font-semibold text-left">
+              <th>Patient</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Action</th>
+            </tr>
+          </thead>
 
-          {% for a in appointments %}
-          <tr class="border-b">
-            <td>{{ a.patient.username }}</td>
-            <td>{{ a.slot.date }}</td>
-            <td>{{ a.slot.start_time }} - {{ a.slot.end_time }}</td>
+          <tbody>
+            {% for a in appointments %}
+            <tr class="border-b">
+              <td>{{ a.patient.username }}</td>
+              <td>{{ a.slot.date }}</td>
+              <td>{{ a.slot.start_time }} – {{ a.slot.end_time }}</td>
 
-            <td class="space-x-2">
+              <td class="space-x-2">
 
-  {% if a.status == "PENDING" %}
-    <a href="{% url 'approve_appointment' a.id %}"
-       class="px-3 py-1 bg-green-500 text-white rounded text-xs">
-      Approve
-    </a>
+                <!-- PENDING -->
+                {% if a.status == "PENDING" %}
+                  <a href="{% url 'approve_appointment' a.id %}"
+                     class="px-3 py-1 bg-green-500 text-white rounded text-xs">
+                    Approve
+                  </a>
 
-    <a href="{% url 'reject_appointment' a.id %}"
-       class="px-3 py-1 bg-red-500 text-white rounded text-xs">
-      Reject
-    </a>
+                  <a href="{% url 'reject_appointment' a.id %}"
+                     class="px-3 py-1 bg-red-500 text-white rounded text-xs">
+                    Reject
+                  </a>
 
-  {% elif a.status == "APPROVED" and a.consultation_status == "NOT_STARTED" %}
-    <span class="text-green-700 font-semibold text-sm">
-      Approved
-    </span>
+                <!-- APPROVED but NOT STARTED -->
+                {% elif a.status == "APPROVED" and a.consultation_status == "NOT_STARTED" %}
+                  <span class="text-green-700 font-semibold text-sm mr-2">
+                    Approved
+                  </span>
 
-    <span class="text-indigo-600 text-sm">
-      Waiting to start
-    </span>
+                  <a href="{% url 'start_consultation' a.id %}"
+                     class="px-3 py-1 bg-indigo-600 text-white rounded text-xs">
+                    Start Consultation
+                  </a>
 
-    <a href="{% url 'start_consultation' a.id %}"
-       class="px-3 py-1 bg-indigo-600 text-white rounded text-xs">
-      Start Consultation
-    </a>
+                <!-- ONGOING -->
+                {% elif a.consultation_status == "ONGOING" %}
+                  <a
+                    href="{{ a.zoom_start_url }}"
+                    target="_blank"
+                    class="px-3 py-1 bg-indigo-600 text-white rounded text-xs">
+                    Open Zoom
+                  </a>
 
-  {% elif a.consultation_status == "ONGOING" %}
-    <a
-  href="{% url 'start_consultation' a.id %}" class="text-blue-600 font-semibold text-sm">
-      Resume Consultation
-    </a>
+                <!-- COMPLETED -->
+                {% elif a.consultation_status == "COMPLETED" %}
+                  <span class="text-gray-600 text-sm mr-2">
+                    Completed
+                  </span>
 
-  {% elif a.consultation_status == "COMPLETED" and a.prescription_pdf %}
-    <a
-    href="{{ a.prescription_pdf.url }}"
-    target="_blank"
-    class="px-3 py-1 bg-indigo-600 text-white rounded text-xs">
-        View Prescription
-    </a>
+                  {% if a.prescription_pdf %}
+                    <a
+                      href="{{ a.prescription_pdf.url }}"
+                      target="_blank"
+                      class="px-3 py-1 bg-violet-600 text-white rounded text-xs">
+                      View Prescription
+                    </a>
+                  {% endif %}
 
-  {% endif %}
+                {% endif %}
 
-</td>
-
-          </tr>
-          {% endfor %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
         </table>
 
         {% else %}
-        <p class="text-indigo-600 text-sm">No appointment requests yet.</p>
+          <p class="text-indigo-600 text-sm">No appointment requests yet.</p>
         {% endif %}
       </div>
 
@@ -131,10 +144,12 @@ Doctor Dashboard
       <div class="glass p-6 shadow">
         <h3 class="font-bold text-violet-700 mb-2">Notifications</h3>
         <p class="text-indigo-600 text-sm">
-          Firebase notifications will appear here
+          System notifications will appear here
         </p>
       </div>
+
     </div>
   </div>
 </div>
+
 {% endblock %}

@@ -4,6 +4,7 @@ from django.contrib import messages
 
 from .models import DoctorAvailableSlot, Appointment
 from .utils.prescription_pdf import generate_prescription_pdf
+from .utils.email import send_zoom_link_email
 
 
 # =========================
@@ -95,7 +96,9 @@ def patient_dashboard(request):
     return render(
         request,
         "dashboards/patient.html",
-        {"appointments": appointments}
+        {
+            "appointments": appointments
+        }
     )
 
 from django.contrib.auth import get_user_model
@@ -117,11 +120,14 @@ def approve_appointment(request, appointment_id):
     )
 
     appointment.status = "APPROVED"
-    appointment.consultation_status = "NOT_STARTED"
     appointment.save()
 
-    return redirect("doctor_dashboard")
+    # 🔥 FIX: slot booked করে দাও
+    slot = appointment.slot
+    slot.is_booked = True
+    slot.save()
 
+    return redirect("doctor_dashboard")
 
 
 @login_required
@@ -139,8 +145,6 @@ def reject_appointment(request, appointment_id):
 
 
 from .utils.zoom import create_zoom_meeting
-
-@login_required
 def start_consultation(request, appointment_id):
     appointment = get_object_or_404(
         Appointment,
@@ -148,10 +152,15 @@ def start_consultation(request, appointment_id):
         slot__doctor=request.user
     )
 
-    # status update
-    if appointment.consultation_status == "NOT_STARTED":
+    if not appointment.zoom_start_url:
+        zoom_data = create_zoom_meeting(appointment)
+
+        appointment.zoom_start_url = zoom_data["start_url"]
+        appointment.zoom_join_url = zoom_data["join_url"]
         appointment.consultation_status = "ONGOING"
         appointment.save()
+
+        send_zoom_link_email(appointment)
 
     return render(
         request,
@@ -159,27 +168,76 @@ def start_consultation(request, appointment_id):
         {"appointment": appointment}
     )
 
-    appointment = get_object_or_404(
-        Appointment,
-        id=appointment_id,
-        slot_doctor=request.user
-    )
+# @login_required
+# def start_consultation(request, appointment_id):
+#     appointment = get_object_or_404(
+#         Appointment,
+#         id=appointment_id,
+#         slot__doctor=request.user
+#     )
 
-    if not appointment.zoom_join_url:
-        meeting = create_zoom_meeting(
-            f"Consultation with {appointment.patient.username}"
-        )
+#     # status update
+#     if appointment.consultation_status == "NOT_STARTED":
+#         appointment.consultation_status = "ONGOING"
+#         appointment.save()
 
-        appointment.zoom_join_url = meeting["join_url"]
-        appointment.zoom_start_url = meeting["start_url"]
-        appointment.consultation_status = "ONGOING"
-        appointment.save()
+#     return render(
+#         request,
+#         "appointments/start_consultation.html",
+#         {"appointment": appointment}
+#     )
 
-    return render(
-        request,
-        "appointments/start_consultation.html",
-        {"appointment": appointment}
-    )
+#     appointment = get_object_or_404(
+#         Appointment,
+#         id=appointment_id,
+#         slot_doctor=request.user
+#     )
+
+#     if not appointment.zoom_join_url:
+#         meeting = create_zoom_meeting(
+#             f"Consultation with {appointment.patient.username}"
+#         )
+
+#         appointment.zoom_join_url = meeting["join_url"]
+#         appointment.zoom_start_url = meeting["start_url"]
+#         appointment.consultation_status = "ONGOING"
+#         appointment.save()
+
+#     return render(
+#         request,
+#         "appointments/start_consultation.html",
+#         {"appointment": appointment}
+#     )
+
+# @login_required
+# def write_prescription(request, appointment_id):
+#     appointment = get_object_or_404(
+#         Appointment,
+#         id=appointment_id,
+#         slot__doctor=request.user
+#     )
+
+#     if request.method == "POST":
+#         appointment.prescription = request.POST.get("prescription")
+#         appointment.consultation_status = "COMPLETED"
+
+#         pdf_file = generate_prescription_pdf(appointment)
+#         appointment.prescription_pdf = pdf_file
+
+#         appointment.save()
+#         return redirect("doctor_dashboard")
+
+    # return render(
+    #     request,
+    #     "appointments/write_prescription.html",
+    #     {"appointment": appointment}
+    # )
+from django.core.mail import EmailMessage
+from django.conf import settings
+
+import os
+from django.core.mail import EmailMessage
+from django.conf import settings
 
 @login_required
 def write_prescription(request, appointment_id):
@@ -193,10 +251,30 @@ def write_prescription(request, appointment_id):
         appointment.prescription = request.POST.get("prescription")
         appointment.consultation_status = "COMPLETED"
 
-        pdf_file = generate_prescription_pdf(appointment)
-        appointment.prescription_pdf = pdf_file
-
+        # generate PDF
+        pdf_relative_path = generate_prescription_pdf(appointment)
+        appointment.prescription_pdf = pdf_relative_path
         appointment.save()
+
+        # ✅ FIXED PATH
+        pdf_full_path = os.path.join(settings.MEDIA_ROOT, pdf_relative_path)
+
+        # send email to patient
+        email = EmailMessage(
+            subject="Your Prescription",
+            body=(
+                f"Dear {appointment.patient.username},\n\n"
+                f"Your consultation is completed.\n"
+                f"Prescription is attached.\n\n"
+                f"Doctor: {appointment.slot.doctor.username}"
+            ),
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=[appointment.patient.email],
+        )
+
+        email.attach_file(pdf_full_path)
+        email.send(fail_silently=True)
+
         return redirect("doctor_dashboard")
 
     return render(

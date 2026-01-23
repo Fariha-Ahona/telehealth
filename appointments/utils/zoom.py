@@ -1,48 +1,37 @@
 import requests
+from datetime import datetime
 from django.conf import settings
-import base64
-
-def get_zoom_access_token():
-    url = "https://zoom.us/oauth/token"
-    auth = base64.b64encode(
-        f"{settings.ZOOM_CLIENT_ID}:{settings.ZOOM_CLIENT_SECRET}".encode()
-    ).decode()
-
-    headers = {
-        "Authorization": f"Basic {auth}",
-        "Content-Type": "application/x-www-form-urlencoded",
-    }
-
-    data = {
-        "grant_type": "account_credentials",
-        "account_id": settings.ZOOM_ACCOUNT_ID,
-    }
-
-    r = requests.post(url, headers=headers, data=data)
-    return r.json()["access_token"]
+from .zoom_token import get_zoom_access_token
 
 
-def create_zoom_meeting(topic):
-    token = get_zoom_access_token()
+def create_zoom_meeting(appointment):
+    access_token = get_zoom_access_token()
+
+    url = "https://api.zoom.us/v2/users/me/meetings"
 
     headers = {
-        "Authorization": f"Bearer {token}",
+        "Authorization": f"Bearer {access_token}",
         "Content-Type": "application/json",
     }
 
+    start_time = datetime.combine(
+        appointment.slot.date,
+        appointment.slot.start_time
+    ).isoformat()
+
     data = {
-        "topic": topic,
+        "topic": f"Consultation with {appointment.patient.username}",
         "type": 2,
+        "start_time": start_time,
+        "duration": 30,
+        "timezone": "UTC",
         "settings": {
-            "join_before_host": True,
-            "waiting_room": False,
+            "join_before_host": False,
+            "waiting_room": True,
         },
     }
 
-    r = requests.post(
-        "https://api.zoom.us/v2/users/me/meetings",
-        headers=headers,
-        json=data,
-    )
+    response = requests.post(url, headers=headers, json=data)
+    response.raise_for_status()
 
-    return r.json()
+    return response.json()

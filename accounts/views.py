@@ -88,21 +88,3 @@ def approve_doctor(request, user_id):
     doctor.is_approved = True
     doctor.save()
     return redirect('admin_dashboard')
-@login_required
-def start_consultation(request, appointment_id):
-    appointment = get_object_or_404(
-        Appointment,
-        id=appointment_id,
-        doctor=request.user
-    )
-
-    # safety check
-    if appointment.status != "APPROVED":
-        messages.error(request, "Appointment not approved yet.")
-        return redirect("doctor_dashboard")
-
-    appointment.consultation_status = "ONGOING"
-    appointment.save()
-
-    messages.success(request, "Consultation started")
-    return redirect("doctor_dashboard")
