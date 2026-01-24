@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}About Us | Ecare{% endblock %}
+{% block content %}
+
+
+
+<section class="bg-gradient-to-br from-indigo-50 via-violet-50 to-white py-20">
+  <div class="max-w-6xl mx-auto px-6">
+
+    <!-- Heading -->
+    <div class="text-center mb-14">
+      <h1 class="text-4xl md:text-5xl font-extrabold text-indigo-900 mb-4">
+        About <span class="text-violet-700">Ecare </span>
+      </h1>
+      <p class="max-w-3xl mx-auto text-indigo-700 text-lg">
+        Bridging the gap between patients and healthcare professionals through secure,
+        accessible, and modern digital healthcare solutions.
+      </p>
+    </div>
+
+    <!-- Mission + Image -->
+    <div class="grid md:grid-cols-2 gap-12 items-center mb-20">
+      <div>
+        <h2 class="text-3xl font-bold text-indigo-900 mb-4">
+          Our Mission
+        </h2>
+        <p class="text-indigo-700 leading-relaxed mb-4">
+          Ecare Online was built with one clear mission: to make quality healthcare
+          accessible for everyone, regardless of location. We empower patients and doctors
+          to connect seamlessly through secure online consultations, appointment management,
+          and digital prescriptions.
+        </p>
+        <p class="text-indigo-700 leading-relaxed">
+          Our system focuses on reliability, simplicity, and patient privacy—ensuring that
+          healthcare delivery is both efficient and trustworthy.
+        </p>
+      </div>
+
+      <div class="relative">
+  <div class="absolute -top-4 -left-4 w-full h-full bg-violet-200 rounded-2xl"></div>
+  <img
+    src="{% static 'img/about.png' %}"
+    alt="About Ecare"
+    class="relative z-10 rounded-2xl shadow-xl w-full object-cover"
+  >
+</div>
+
+    </div>
+
+    <!-- Why Choose Us -->
+    <div class="mb-20">
+      <h2 class="text-3xl font-bold text-center text-indigo-900 mb-12">
+        Why Choose Ecare?
+      </h2>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Card -->
+        <div class="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition">
+          <div class="w-12 h-12 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center mb-4">
+            ✓
+          </div>
+          <h3 class="text-lg font-semibold text-indigo-900 mb-2">
+            Secure & Private
+          </h3>
+          <p class="text-indigo-700 text-sm">
+            Patient data and consultations are protected using modern security practices,
+            ensuring confidentiality and trust.
+          </p>
+        </div>
+
+        <!-- Card -->
+        <div class="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition">
+          <div class="w-12 h-12 bg-violet-100 text-violet-700 rounded-full flex items-center justify-center mb-4">
+            ⚡
+          </div>
+          <h3 class="text-lg font-semibold text-indigo-900 mb-2">
+            Fast & Accessible
+          </h3>
+          <p class="text-indigo-700 text-sm">
+            Book appointments, join consultations, and receive prescriptions without
+            unnecessary delays.
+          </p>
+        </div>
+
+        <!-- Card -->
+        <div class="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition">
+          <div class="w-12 h-12 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center mb-4">
+            👩‍⚕️
+          </div>
+          <h3 class="text-lg font-semibold text-indigo-900 mb-2">
+            Doctor-Focused Design
+          </h3>
+          <p class="text-indigo-700 text-sm">
+            Designed to support healthcare professionals with intuitive dashboards,
+            scheduling tools, and digital reporting.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="bg-gradient-to-r from-indigo-600 to-violet-600 rounded-3xl text-white py-14 px-6 mb-20">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div>
+          <h3 class="text-4xl font-extrabold">1,500+</h3>
+          <p class="text-indigo-100 text-sm mt-1">Patients Served</p>
+        </div>
+        <div>
+          <h3 class="text-4xl font-extrabold">120+</h3>
+          <p class="text-indigo-100 text-sm mt-1">Registered Doctors</p>
+        </div>
+        <div>
+          <h3 class="text-4xl font-extrabold">24/7</h3>
+          <p class="text-indigo-100 text-sm mt-1">Availability</p>
+        </div>
+        <div>
+          <h3 class="text-4xl font-extrabold">100%</h3>
+          <p class="text-indigo-100 text-sm mt-1">Digital & Paperless</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Academic Note -->
+    <!-- Academic Note -->
+<div class="text-center mt-20">
+  <h2 class="text-2xl font-bold text-indigo-900 mb-3">
+    Academic & Prototype Disclaimer
+  </h2>
+  <p class="text-indigo-700 max-w-3xl mx-auto text-sm">
+    Ecare Online is developed as part of an academic Software Engineering project.
+    While it demonstrates real-world healthcare workflows, it is intended for educational
+    and prototype purposes and does not replace emergency medical services.
+  </p>
+</div>
+
+<!-- Developers Section -->
+<div class="mt-14 max-w-5xl mx-auto">
+  <h3 class="text-xl font-semibold text-indigo-900 text-center mb-8">
+    Project Developers
+  </h3>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    
+    <!-- Backend Developer Card -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 flex items-center gap-6 hover:shadow-xl transition">
+      <img
+        src="https://randomuser.me/api/portraits/women/44.jpg"
+        alt="Fariha Jahan"
+        class="w-20 h-20 rounded-full border-4 border-indigo-200"
+      />
+      <div>
+        <h4 class="text-lg font-bold text-indigo-900">
+          Fariha Jahan
+        </h4>
+        <p class="text-sm text-indigo-700 font-medium">
+          Backend Developer & Project Lead
+        </p>
+        <p class="text-xs text-gray-500 mt-1">
+          Responsible for system architecture, database design,
+          appointment workflows, and security.
+        </p>
+      </div>
+    </div>
+
+    <!-- Frontend Developer Card -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 flex items-center gap-6 hover:shadow-xl transition">
+      <img
+        src="https://randomuser.me/api/portraits/men/32.jpg"
+        alt="Frontend Developer"
+        class="w-20 h-20 rounded-full border-4 border-violet-200"
+      />
+      <div>
+        <h4 class="text-lg font-bold text-indigo-900">
+          Frontend Developer
+        </h4>
+        <p class="text-sm text-violet-700 font-medium">
+          UI/UX & Frontend Engineer
+        </p>
+        <p class="text-xs text-gray-500 mt-1">
+          Designed responsive interfaces, dashboards,
+          user experience flows, and visual consistency.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+  </div>
+</section>
+
+{% endblock %}

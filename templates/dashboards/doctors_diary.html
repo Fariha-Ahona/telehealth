@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Doctor’s Diary{% endblock %}
+
+{% block content %}
+
+<section class="py-20 bg-gradient-to-br from-indigo-50 via-violet-50 to-white">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <h1 class="text-4xl md:text-5xl font-extrabold text-indigo-900 text-center mb-16">
+      Doctor’s Diary
+    </h1>
+
+    <!-- ================= CARDIOLOGY ================= -->
+    <section class="mb-20">
+      <h2 class="text-3xl font-bold text-red-700 mb-8 text-center">
+        Cardiology Department
+      </h2>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- Doctor 1 -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition">
+          <img src="https://randomuser.me/api/portraits/men/32.jpg"
+               class="w-24 h-24 rounded-full mx-auto border-4 border-indigo-300 mb-4">
+          <h3 class="text-lg font-semibold text-indigo-900 text-center">
+            Dr. Amirul Kabir
+          </h3>
+          <p class="text-sm text-indigo-600 text-center">Senior Cardiologist</p>
+          <ul class="text-sm text-gray-600 mt-3 space-y-1 text-center">
+            <li>❤️ Experience: 20+ years</li>
+            <li>🏆 National Cardiology Award</li>
+            <li>✔ 5000+ Heart Patients</li>
+          </ul>
+        </div>
+
+        <!-- Doctor 2 -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition">
+          <img src="https://randomuser.me/api/portraits/men/45.jpg"
+               class="w-24 h-24 rounded-full mx-auto border-4 border-indigo-300 mb-4">
+          <h3 class="text-lg font-semibold text-indigo-900 text-center">
+            Dr. Hasan Mahmud
+          </h3>
+          <p class="text-sm text-indigo-600 text-center">Interventional Cardiologist</p>
+          <ul class="text-sm text-gray-600 mt-3 space-y-1 text-center">
+            <li>❤️ Experience: 18+ years</li>
+            <li>🏆 Excellence in Cardiac Care</li>
+            <li>✔ 4200+ Procedures</li>
+          </ul>
+        </div>
+
+        <!-- Doctor 3 -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition">
+          <img src="https://randomuser.me/api/portraits/men/52.jpg"
+               class="w-24 h-24 rounded-full mx-auto border-4 border-indigo-300 mb-4">
+          <h3 class="text-lg font-semibold text-indigo-900 text-center">
+            Dr. Rashed Khan
+          </h3>
+          <p class="text-sm text-indigo-600 text-center">Cardiac Surgeon</p>
+          <ul class="text-sm text-gray-600 mt-3 space-y-1 text-center">
+            <li>❤️ Experience: 15+ years</li>
+            <li>🏆 Best Surgeon Award</li>
+            <li>✔ 3000+ Surgeries</li>
+          </ul>
+        </div>
+
+        <!-- Doctor 4 -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition">
+          <img src="https://randomuser.me/api/portraits/men/60.jpg"
+               class="w-24 h-24 rounded-full mx-auto border-4 border-indigo-300 mb-4">
+          <h3 class="text-lg font-semibold text-indigo-900 text-center">
+            Dr. Saiful Islam
+          </h3>
+          <p class="text-sm text-indigo-600 text-center">Heart Failure Specialist</p>
+          <ul class="text-sm text-gray-600 mt-3 space-y-1 text-center">
+            <li>❤️ Experience: 14+ years</li>
+            <li>🏆 Patient Choice Award</li>
+            <li>✔ 3500+ Consultations</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= GYNECOLOGY ================= -->
+    <section class="mb-20">
+      <h2 class="text-3xl font-bold text-pink-700 mb-8 text-center">
+        Gynecology Department
+      </h2>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+          <img src="https://randomuser.me/api/portraits/women/65.jpg"
+               class="w-24 h-24 rounded-full mx-auto border-4 border-indigo-500 mb-4">
+          <h3 class="text-lg font-semibold text-center">Dr. Fatema Rahman</h3>
+          <p class="text-sm text-center text-indigo-600">Consultant Gynecologist</p>
+          <ul class="text-sm text-center text-gray-600 mt-3">
+            <li>👶 18+ years experience</li>
+            <li>🏆 Best Women Care Award</li>
+            <li>✔ 2500+ Deliveries</li>
+          </ul>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+          <img src="https://randomuser.me/api/portraits/women/45.jpg"
+               class="w-24 h-24 rounded-full mx-auto border-4 border-indigo-500 mb-4">
+          <h3 class="text-lg font-semibold text-center">Dr. Nusrat Jahan</h3>
+          <p class="text-sm text-center text-indigo-600">Senior Gynecologist</p>
+          <ul class="text-sm text-center text-gray-600 mt-3">
+            <li>👶 15+ years experience</li>
+            <li>🏆 Excellence Award</li>
+            <li>✔ 2000+ Cases</li>
+          </ul>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+          <img src="https://randomuser.me/api/portraits/women/32.jpg"
+               class="w-24 h-24 rounded-full mx-auto border-4 border-indigo-500 mb-4">
+          <h3 class="text-lg font-semibold text-center">Dr. Shaila Ahmed</h3>
+          <p class="text-sm text-center text-indigo-600">Women Health Specialist</p>
+          <ul class="text-sm text-center text-gray-600 mt-3">
+            <li>👶 12+ years experience</li>
+            <li>🏆 Gold Service Award</li>
+            <li>✔ 1800+ Patients</li>
+          </ul>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+          <img src="https://randomuser.me/api/portraits/women/22.jpg"
+               class="w-24 h-24 rounded-full mx-auto border-4 border-indigo-500 mb-4">
+          <h3 class="text-lg font-semibold text-center">Dr. Farzana Kabir</h3>
+          <p class="text-sm text-center text-indigo-600">Obstetrician</p>
+          <ul class="text-sm text-center text-gray-600 mt-3">
+            <li>👶 10+ years experience</li>
+            <li>🏆 Patient Choice Award</li>
+            <li>✔ 1500+ Deliveries</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+</section>
+
+{% endblock %}

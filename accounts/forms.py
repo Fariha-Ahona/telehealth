@@ -32,14 +32,21 @@ class RegisterForm(forms.ModelForm):
             }),
         }
 
+# accounts/forms.py
+from django import forms
+
 class LoginForm(forms.Form):
+
     username = forms.CharField(
         widget=forms.TextInput(attrs={
-            "class": "w-full px-3 py-2 border border-violet-300 rounded-lg focus:ring-violet-500 focus:border-violet-500"
+            "placeholder": "Username",
+            "class": "w-full px-4 py-3 border border-violet-300 rounded-xl focus:ring-violet-500 focus:border-violet-500"
         })
     )
+
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={
-            "class": "w-full px-3 py-2 border border-violet-300 rounded-lg focus:ring-violet-500 focus:border-violet-500"
+            "placeholder": "Password",
+            "class": "w-full px-4 py-3 border border-violet-300 rounded-xl focus:ring-violet-500 focus:border-violet-500"
         })
     )

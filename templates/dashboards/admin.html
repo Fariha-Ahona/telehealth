@@ -5,7 +5,7 @@
 <div class="max-w-5xl mx-auto mt-10">
 
   <h1 class="text-3xl font-bold text-indigo-800 mb-6">
-    Admin – Doctor Approval
+    Admin Doctor Approval
   </h1>
 
   <div class="bg-white shadow rounded p-6 mb-10">
@@ -21,9 +21,9 @@
 
         {% for d in pending_doctors %}
         <tr class="border-b">
-          <td>{{ d.username }}</td>
-          <td>{{ d.email }}</td>
-          <td>
+          <td class="py-2">{{ d.username }}</td>
+          <td class="py-2">{{ d.email }}</td>
+          <td class="py-2">
             <a href="{% url 'approve_doctor' d.id %}"
                class="bg-green-500 text-white px-3 py-1 rounded">
               Approve
@@ -48,6 +48,47 @@
       {% endfor %}
     </ul>
   </div>
+  <div class="max-w-6xl mx-auto px-6 py-10">
+
+  <h2 class="text-2xl font-bold text-indigo-800 mt-14 mb-4">
+  Contact Messages
+</h2>
+
+<div class="bg-white rounded-xl shadow overflow-hidden">
+  <table class="w-full text-sm">
+    <thead class="bg-indigo-100 text-indigo-800">
+      <tr>
+        <th class="p-3 text-left">Name</th>
+        <th class="p-3 text-left">Email</th>
+        <th class="p-3 text-left">Message</th>
+        <th class="p-3 text-left">Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if contact_messages %}
+        {% for msg in contact_messages %}
+        <tr class="border-t">
+          <td class="p-3">{{ msg.name }}</td>
+          <td class="p-3">{{ msg.email }}</td>
+          <td class="p-3 text-gray-700">{{ msg.message|truncatechars:50 }}</td>
+          <td class="p-3 text-gray-500 text-xs">
+            {{ msg.created_at|date:"M d, Y h:i A" }}
+          </td>
+        </tr>
+        {% endfor %}
+      {% else %}
+        <tr>
+          <td colspan="4" class="p-6 text-center text-gray-500">
+            No messages yet.
+          </td>
+        </tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>
+
+
 
 </div>
+
 {% endblock %}
