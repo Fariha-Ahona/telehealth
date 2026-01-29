@@ -1,3 +1,10 @@
+# 🏥 Telehealth Management System
+
+A **full-featured Django-based Telehealth Management System** designed to connect **patients and doctors** through a simple, clean, and user-friendly web interface.
+
+This project focuses on **real-world healthcare workflow**, including appointment scheduling, consultations, and prescription handling.
+
+
 ## 🖼️ User Interface Screenshots
 
 ### 🛠️ Admin Dashboard
@@ -7,7 +14,7 @@ Admin panel for managing users, doctors, patients, and system activities.
 
 
 ### 🧑‍⚕️ Doctor Availability & Bookings
-![Doctor Availability](screenshots/avail_booked_dr.png)  
+![Doctor Availability](screenshots/Avail_booked%20dr.png)
 Doctor’s availability and booked appointment slots overview.
 
 
@@ -19,7 +26,7 @@ Consultation interface where doctors create and manage patient prescriptions.
 
 
 ### 🧑‍⚕️ Doctor Dashboard
-![Doctor Dashboard](screenshots/drdashboard.png)  
+![Doctor Dashboard](screenshots/drdasboard.png)  
 Doctor dashboard displaying appointments, consultations, and daily activities.
 
 
@@ -49,5 +56,45 @@ Patient-side appointment list with booking and appointment status tracking.
 
 
 ### 📧 Zoom Consultation Email
-![Zoom Email](screenshots/zoom_email.png)  
+![Zoom Email](screenshots/zoom_email%20(1).png)  
 Email notification containing Zoom consultation meeting details.
+
+
+## 🚀 Features Breakdown
+
+### 👤 Authentication
+- Secure login & registration
+- Role-based dashboard access
+
+### 🩺 Appointment System
+- Doctors set available slots
+- Patients book appointments
+- Appointment approval workflow
+
+### 💊 Consultation & Prescription
+- Start consultation
+- Upload prescriptions (PDF)
+- Doctor diary & history
+
+---
+
+## 🛠️ Tech Stack
+
+- **Backend:** Django
+- **Frontend:** HTML, CSS, Bootstrap
+- **Database:** SQLite (Development)
+- **Authentication:** Django Auth
+- **Version Control:** Git & GitHub
+
+---
+
+## ⚙️ Installation Guide
+
+```bash
+git clone https://github.com/Fariha-Ahona/telehealth.git
+cd telehealth
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py runserver
