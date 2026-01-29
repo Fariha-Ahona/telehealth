@@ -15,9 +15,12 @@ Landing page introducing the telehealth system and its core features. Logged in 
 ![Admin Dashboard](screenshots/admin_dashboard.png)  
 Admin panel for managing users, doctors to have a secure system.
 
+
+
 ### 🧑‍⚕️ Doctor Dashboard
 ![Doctor Dashboard](screenshots/drdasboard.png)  
-Doctor dashboard displaying appointments, consultations, and daily activities.
+Doctor dashboard displaying appointments, consultations, and daily activities by approving/rejecting patients booked appointments.
+
 
 
 ### 🧑‍⚕️ Doctor Availability & Bookings
@@ -30,9 +33,12 @@ Doctor’s availability and booked appointment slots overview.
 Consultation with zoom link and an interface where doctors create and manage patient prescriptions.
 
 
+
 ### 🧑‍🤝‍🧑 Patient Dashboard
 ![Patient Dashboard](screenshots/patient_dashboard.png)  
 Patient dashboard to view appointments, consultations, and prescriptions.
+
+
 
 ### 📅 Patient Appointments
 ![Patient Appointments](screenshots/patients_appointments.png)
@@ -62,7 +68,7 @@ Email notification containing Zoom consultation meeting details.
 
 ### 💊 Consultation & Prescription
 - Start consultation
-- Upload prescriptions (PDF)
+- Write prescriptions and generate PDF.
 - Doctor diary & history
 
 ---
