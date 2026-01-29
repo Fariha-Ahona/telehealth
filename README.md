@@ -35,7 +35,7 @@ Consultation with zoom link and an interface where doctors create and manage pat
 Patient dashboard to view appointments, consultations, and prescriptions.
 
 ### 📅 Patient Appointments
-![Patient Appointments](screenshots/patients appointments.png)
+![Patient Appointments](screenshots/patients_appointments.png)
 Patient-side appointment list with booking and appointment status tracking.
 
 
