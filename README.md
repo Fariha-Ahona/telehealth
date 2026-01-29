@@ -7,10 +7,17 @@ This project focuses on **real-world healthcare workflow**, including appointmen
 
 ## 🖼️ User Interface Screenshots
 
+### 🏠 Home Page
+![Home Page](screenshots/home_page.png)  
+Landing page introducing the telehealth system and its core features. Logged in as doctor and approved by admin
+
 ### 🛠️ Admin Dashboard
 ![Admin Dashboard](screenshots/admin_dashboard.png)  
-Admin panel for managing users, doctors, patients, and system activities.
+Admin panel for managing users, doctors to have a secure system.
 
+### 🧑‍⚕️ Doctor Dashboard
+![Doctor Dashboard](screenshots/drdasboard.png)  
+Doctor dashboard displaying appointments, consultations, and daily activities.
 
 
 ### 🧑‍⚕️ Doctor Availability & Bookings
@@ -18,41 +25,23 @@ Admin panel for managing users, doctors, patients, and system activities.
 Doctor’s availability and booked appointment slots overview.
 
 
-
 ### 💬 Consultation & Prescription
 ![Consultation Prescription](screenshots/consult_prescription.png)  
-Consultation interface where doctors create and manage patient prescriptions.
-
-
-
-### 🧑‍⚕️ Doctor Dashboard
-![Doctor Dashboard](screenshots/drdasboard.png)  
-Doctor dashboard displaying appointments, consultations, and daily activities.
-
-
-
-### 🏠 Home Page
-![Home Page](screenshots/home_page.png)  
-Landing page introducing the telehealth system and its core features.
-
+Consultation with zoom link and an interface where doctors create and manage patient prescriptions.
 
 
 ### 🧑‍🤝‍🧑 Patient Dashboard
 ![Patient Dashboard](screenshots/patient_dashboard.png)  
 Patient dashboard to view appointments, consultations, and prescriptions.
 
+### 📅 Patient Appointments
+![Patient Appointments](screenshots/patients appointments.png)
+Patient-side appointment list with booking and appointment status tracking.
 
 
 ### 📄 Prescription PDF Email
 ![Prescription PDF Email](screenshots/prescription_pdf_email.png)  
 Automatically generated prescription PDF sent to the patient via email.
-
-
-
-### 📅 Patient Appointments
-![Patient Appointments](screenshots/patients_appointments.png)  
-Patient-side appointment list with booking and appointment status tracking.
-
 
 
 ### 📧 Zoom Consultation Email
