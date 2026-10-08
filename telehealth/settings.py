@@ -11,25 +11,32 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
+# ---------------------------------------------------------
+# BASE DIRECTORY
+# ---------------------------------------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
+# ---------------------------------------------------------
+# SECURITY
+# ---------------------------------------------------------
+SECRET_KEY = os.getenv("SECRET_KEY")
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-#f-hv6q@hk-crlb4hy=$bt88(w6%#%xl1$23&h$ixt(vza#=y='
+DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.getenv("ALLOWED_HOSTS", "").split(",")
+    if host.strip()
+]
 
-ALLOWED_HOSTS = []
 
-
-# Application definition
-
+# ---------------------------------------------------------
+# APPLICATIONS
+# ---------------------------------------------------------
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,10 +44,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'accounts',
     'appointments',
 ]
 
+
+# ---------------------------------------------------------
+# MIDDLEWARE
+# ---------------------------------------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -51,8 +63,18 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
+# ---------------------------------------------------------
+# URL / WSGI
+# ---------------------------------------------------------
 ROOT_URLCONF = 'telehealth.urls'
 
+WSGI_APPLICATION = 'telehealth.wsgi.application'
+
+
+# ---------------------------------------------------------
+# TEMPLATES
+# ---------------------------------------------------------
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -68,13 +90,16 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'telehealth.wsgi.application'
 
+# ---------------------------------------------------------
+# CUSTOM USER MODEL
+# ---------------------------------------------------------
 AUTH_USER_MODEL = 'accounts.User'
 
-# Database
-# https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+# ---------------------------------------------------------
+# DATABASE
+# ---------------------------------------------------------
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -83,9 +108,9 @@ DATABASES = {
 }
 
 
-# Password validation
-# https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
-
+# ---------------------------------------------------------
+# PASSWORD VALIDATION
+# ---------------------------------------------------------
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -102,9 +127,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/6.0/topics/i18n/
-
+# ---------------------------------------------------------
+# INTERNATIONALIZATION
+# ---------------------------------------------------------
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -114,42 +139,46 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.0/howto/static-files/
-
-from pathlib import Path
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-
+# ---------------------------------------------------------
+# STATIC FILES
+# ---------------------------------------------------------
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
-import os
-from pathlib import Path
-from dotenv import load_dotenv
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+# ---------------------------------------------------------
+# MEDIA FILES
+# ---------------------------------------------------------
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-load_dotenv(BASE_DIR / ".env")
 
+# ---------------------------------------------------------
+# EMAIL CONFIGURATION
+# ---------------------------------------------------------
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-EMAIL_HOST_USER = "ecurecare7@gmail.com"
-EMAIL_HOST_PASSWORD = "fxwt wjqq dekv etzu"
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 
 DEFAULT_FROM_EMAIL = "Ecare <ecurecare7@gmail.com>"
 
 
+# ---------------------------------------------------------
+# ZOOM CONFIGURATION
+# ---------------------------------------------------------
 ZOOM_ACCOUNT_ID = os.getenv("ZOOM_ACCOUNT_ID")
 ZOOM_CLIENT_ID = os.getenv("ZOOM_CLIENT_ID")
 ZOOM_CLIENT_SECRET = os.getenv("ZOOM_CLIENT_SECRET")
-import os
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+# ---------------------------------------------------------
+# DEFAULT PRIMARY KEY
+# ---------------------------------------------------------
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
